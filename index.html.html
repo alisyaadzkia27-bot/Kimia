@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kimiapedia | Eksplorasi Dunia Kimia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        /* Variabel Warna dan Styling Dasar */
+        :root {
+            --primary-blue: #2196f3; /* Biru utama: Light Blue */
+            --secondary-blue: #0d47a1; /* Biru gelap: Dark Blue */
+            --accent-green: #4caf50; /* Hijau untuk umpan balik Benar */
+            --accent-red: #f44336; /* Merah untuk umpan balik Salah */
+            --light-blue: #e3f2fd; /* Biru sangat terang */
+            --text-dark: #333;
+            --text-light: #fff;
+            --gradient-start: #4a90e2;
+            --gradient-end: #0d47a1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.7;
+            background-color: var(--light-blue);
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Tautan */
+        a {
+            text-decoration: none;
+            color: var(--primary-blue);
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: var(--secondary-blue);
+        }
+
+        /* Tombol */
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            text-transform: uppercase;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+            color: var(--text-light);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Tipografi */
+        h1,
+        h2,
+        h3 {
+            color: var(--secondary-blue);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 3.2em;
+        }
+        h2 {
+            font-size: 2.4em;
+        }
+        h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        /* Header Navigasi */
+        .header {
+            background-color: var(--text-light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--secondary-blue);
+            letter-spacing: -1px;
+        }
+
+        /* Penyesuaian Navigasi */
+        .nav-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav a {
+            margin-left: 25px;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            background-color: var(--primary-blue);
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease;
+        }
+        .nav a:hover::after,
+        .nav a.active::after {
+            width: 100%;
+        }
+
+        .author-btn {
+            background-color: transparent;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            margin-left: 20px; /* Jarak dari navigasi */
+        }
+        .author-btn:hover {
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: var(--text-light);
+            padding: 120px 0;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            animation: backgroundShift 15s ease infinite alternate;
+        }
+
+        @keyframes backgroundShift {
+            0% {
+                background: linear-gradient(135deg, #4a90e2, #0d47a1);
+            }
+
+            100% {
+                background: linear-gradient(135deg, #0d47a1, #4a90e2);
+            }
+        }
+
+        .hero-section .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .hero-content {
+            max-width: 55%;
+            text-align: left;
+        }
+        .hero-content h1 {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-size: 3.5em;
+        }
+        .hero-content p {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .hero-illustration {
+            width: 45%;
+        }
+        .hero-illustration img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Author Popup (Modal) */
+        .author-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            z-index: 2000;
+        }
+        .author-popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .no-scroll {
+            overflow: hidden;
+        }
+
+        .author-card {
+            background-color: var(--text-light);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            max-width: 500px;
+            text-align: center;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-top: 5px solid var(--primary-blue);
+        }
+        .author-popup.active .author-card {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .author-card img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-blue);
+            box-shadow: 0 2px 10px #e3f2fd;
+        }
+        .author-card h2 {
+            margin-bottom: 10px;
+        }
+        .author-card p {
+            margin-bottom: 15px;
+        }
+        .author-card .close-btn {
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .author-card .close-btn:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        /* Materi Section - Glassmorphism Card */
+        .materi-section {
+            padding: 100px 0;
+            background-color: var(--light-blue);
+        }
+        .materi-section h2 {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .materi-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-bottom: 50px;
+            padding: 40px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 8px solid var(--primary-blue);
+        }
+
+        .materi-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .materi-card h3 {
+            color: var(--secondary-blue);
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--primary-blue);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .materi-card .card-content {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        .materi-card .text-content {
+            flex: 1;
+        }
+        .materi-card .key-points {
+            list-style: disc;
+            margin-left: 30px;
+            color: #555;
+        }
+        .materi-card .key-points li {
+            margin-bottom: 5px;
+        }
+        .materi-card .media-content {
+            flex: 0 0 380px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+        .materi-card .media-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        .materi-card .video-placeholder {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* Kuis Singkat */
+        .quiz-box {
+            margin-top: 30px;
+            padding: 20px;
+            border: 3px dashed var(--primary-blue);
+            border-radius: 10px;
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+        .quiz-box p {
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        .quiz-box button {
+            background-color: var(--secondary-blue);
+            color: var(--text-light);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            opacity: 1;
+        }
+        .quiz-box button:hover:not(:disabled) {
+            background-color: var(--primary-blue);
+        }
+        .quiz-box button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .quiz-box button.correct-answer {
+            background-color: var(--accent-green);
+        }
+        .quiz-box button.wrong-answer {
+            background-color: var(--accent-red);
+        }
+
+        .quiz-box .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Bank Soal Section - Gaya Seragam */
+        .quiz-section {
+            padding: 100px 0;
+            background-color: var(--text-light); /* Warna yang kontras */
+        }
+
+        .quiz-item {
+            background-color: rgba(240, 248, 255, 0.95); /* Biru muda sangat pucat */
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            padding: 30px;
+            border-left: 5px solid var(--primary-blue);
+            transition: border-left-color 0.3s ease;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--secondary-blue);
+        }
+
+        .options-group button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .options-group button:hover:not(:disabled) {
+            background-color: var(--light-blue);
+            border-color: var(--primary-blue);
+        }
+
+        .options-group button.correct-answer {
+            background-color: var(--accent-green);
+            color: var(--text-light);
+            border-color: var(--accent-green);
+        }
+        .options-group button.wrong-answer {
+            background-color: var(--accent-red);
+            color: var(--text-light);
+            border-color: var(--accent-red);
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-height: 20px;
+        }
+
+        /* Tentang Kimiapedia */
+        .about-section {
+            padding: 60px 0;
+            text-align: center;
+            background-color: var(--light-blue);
+            border-top: 1px solid #ddd;
+        }
+        .about-section p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1em;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--secondary-blue);
+            color: var(--light-blue);
+            text-align: center;
+            padding: 40px 0;
+            font-size: 1em;
+            opacity: 1;
+        }
+
+        /* Section Komentar */
+        #komentar {
+            padding: 60px 0;
+            background-color: #f9fcff;
+        }
+        #komentar h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--secondary-blue);
+        }
+        #commentList > div {
+            background: #fff;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--primary-blue);
+            border-radius: 7px;
+            box-shadow: 0 1px 5px #ddd;
+            color: var(--text-dark);
+        }
+
+        /* Media Queries untuk Responsif */
+        @media (max-width: 992px) {
+            .hero-section {
+                padding: 80px 0;
+            }
+            .hero-section .container {
+                flex-direction: column-reverse;
+                text-align: center;
+                gap: 30px;
+            }
+            .hero-content {
+                max-width: 100%;
+                text-align: center;
+            }
+            .hero-content h1 {
+                font-size: 3em;
+            }
+            .hero-illustration {
+                width: 80%;
+            }
+            .materi-section {
+                padding: 80px 0;
+            }
+            .materi-card .card-content {
+                flex-direction: column;
+                align-items: center;
+            }
+            .materi-card .media-content {
+                flex: none;
+                width: 100%;
+                max-width: 450px;
+            }
+            .materi-card .media-content img {
+                max-width: 100%;
+            }
+            .materi-card .video-placeholder iframe {
+                height: 250px;
+            }
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2em;
+            }
+            h2 {
+                font-size: 1.8em;
+            }
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-controls {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+                align-items: stretch;
+            }
+            .nav a {
+                margin: 0 10px;
+                display: inline-block;
+            }
+            .author-btn {
+                margin: 0;
+            }
+            .quiz-box button {
+                padding: 8px 15px;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container nav-container">
+            <div class="logo"><i class="fas fa-flask"></i> Kimiapedia</div>
+            <div class="nav-controls">
+                <nav class="nav">
+                    <a href="#home" class="nav-link active" id="link-home">Beranda</a>
+                    <a href="#materi" class="nav-link" id="link-materi">Materi</a>
+                    <a href="#bank-soal" class="nav-link" id="link-bank-soal">Bank Soal</a>
+                    <a href="#tentang" class="nav-link" id="link-tentang">Tentang</a>
+                    <a href="#komentar" class="nav-link" id="link-komentar">Komentar</a>
+                </nav>
+                <button class="author-btn" aria-label="Tampilkan informasi penulis" onclick="toggleAuthorInfo()"><i class="fas fa-user-edit"></i> Penulis</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero-section">
+            <div class="container">
+                <div class="hero-content" data-aos="fade-right">
+                    <h1>Sains di Layar: Kimiapedia! ⚛️</h1>
+                    <p>Pahami atom, molekul, dan reaksi terhebat melalui ilustrasi visual. Belajar Kimia? EZ PZ Lemon Squeezy</p>
+                    <a href="#materi" class="btn btn-primary">Mulai Belajar <i class="fas fa-arrow-down"></i></a>
+                </div>
+                <div class="hero-illustration" data-aos="fade-left" data-aos-delay="300">
+                </div>
+            </div>
+        </section>
+
+        <section id="author-info" class="author-popup" role="dialog" aria-modal="true" aria-labelledby="author-title">
+            <div class="author-card">
+                <img src="fotoallysa.jpg" alt="Foto Allysa Dwi Adzkia" />
+                <h2 id="author-title">Tentang Penulis <i class="fas fa-flask"></i></h2>
+                <p>Halo Semuanya! Nama saya adalah Allysa Dwi Adzkia, seorang Mahasiswa Baru S1 Jurusan Pendidikan Kimia yang bersemangat untuk membuat pembelajaran yang menyenangkan. Saya percaya literasi adalah kunci untuk memahami dunia. Selamat bereksplorasi! Dan enjoyy~~ ♪～(・ε・ )</p>
+                <p>Terhubung:
+                    <a href="#" target="_blank" aria-label="Instagram Penulis"><i class="fab fa-instagram"></i> Instagram</a> |
+                    <a href="mailto:alisyadwiadzkia@gmail.com" aria-label="Email Penulis"><i class="fas fa-envelope"></i> Email</a>
+                </p>
+                <button class="close-btn" onclick="toggleAuthorInfo()">Tutup</button>
+            </div>
+        </section>
+
+        <section id="materi" class="materi-section">
+            <div class="container">
+                <h2>📚 Materi Kimia Interaktif</h2>
+                <hr />
+
+                <div class="materi-card interactive-card" data-aos="fade-up">
+                    <h3><i class="fas fa-atom"></i> 1. Atom dan Unsur: Blok Bangun Semesta</h3>
+                    <div class="card-content">
+                        <div class="text-content">
+                            <p>Atom adalah satuan dasar materi yang memiliki sifat-sifat suatu unsur kimia, yang terdiri dari inti atom (proton dan neutron) dan elektron yang mengelilinginya. Unsur adalah zat murni yang hanya terdiri dari satu jenis atom, di mana setiap atom memiliki jumlah proton yang sama. Contohnya, atom karbon adalah penyusun unsur karbon, dan unsur karbon tersusun dari semua atom yang memiliki jumlah proton yang sama dengan karbon. Atau bisa di tonton video disebelah yaa~😉 </p>
+                            <ul class="key-points">
+                                <li>Struktur dasar atom </li>
+                                <li>Lambang unsur </li>
+                                <li>Pengenalan tabel periodik </li>
+                            </ul>
+                            <div class="quiz-box" data-correct-answer="proton">
+                                <p><strong>Cek Pemahaman:</strong> Bagian atom yang bermuatan positif adalah...?</p>
+                                <button onclick="checkQuiz(this, 'proton', true)">Proton</button>
+                                <button onclick="checkQuiz(this, 'elektron', true)">Elektron</button>
+                                <div class="feedback" role="alert" aria-live="assertive"></div>
+                            </div>
+                        </div>
+                        <div class="media-content">
+                            <div class="video-placeholder">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/pJEk52iN5Rk" title="Video tentang Model Atom" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			                <div class="materi-card interactive-card" data-aos="fade-up" data-aos-delay="200">
+                    <h3><i class="fas fa-link"></i> 2. Ikatan Kimia: Perekat Alam Semesta</h3>
+                    <div class="card-content">
+                        <div class="text-content">
+                            <p>Ikatan kimia menjelaskan mengapa atom-atom bersatu membentuk molekul. Tiga jenis utamanya adalah ikatan ionik (transfer elektron, contohnya Natrium Klorida (Garam)) , ikatan kovalen (berbagi elektron, contohnya Air dan Oksigen) , dan ikatan logam (elektron bebas antar atom logam). Agar lebih paham boleh cek video disebelah ini yaa (^o^)／~~ </p>
+                            <ul class="key-points"><li>Ikatan ionik & senyawa ionik</li><li>Ikatan kovalen & molekul kovalen</li><li>Ikatan Logam</li></ul>
+                            <div class="quiz-box" data-correct-answer="ionik">
+                                <p><strong>Cek Pemahaman:</strong> Ikatan yang melibatkan serah terima elektron adalah...?</p>
+                                <button onclick="checkQuiz(this, 'ionik', true)">Ionik</button>
+                                <button onclick="checkQuiz(this, 'kovalen', true)">Kovalen</button>
+                                <div class="feedback" role="alert" aria-live="assertive"></div>
+                            </div>
+                        </div>
+                        <div class="media-content">
+                           
+                            <div class="video-placeholder">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/vjxoQ8CMmo8" title="Video tentang Ikatan Kimia" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="materi-card interactive-card" data-aos="fade-up" data-aos-delay="400">
+                    <h3><i class="fas fa-microscope"></i> 3. Reaksi Kimia: Transformasi Materi</h3>
+                    <div class="card-content">
+                        <div class="text-content">
+                            <p>Reaksi kimia adalahproses di mana zat-zat asli ( pereaksi ) mengalami perubahan untuk menghasilkan zat-zat baru ( produk ) dengan sifat dan komposisi yang berbeda. Proses ini melibatkan pemutusan dan pembentukan ikatan atom, yang sering disertai dengan perubahan fisik seperti perubahan warna, pelepasan gas, atau pembentukan pengendapan. Contoh umum reaksi kimia meliputi pembakaran kayu, besi berkarat, dan masakan membusuk. Lebih lengkapnya bisa cek video di samping ( ^-^)ノ∠※。.:*:・'°☆</p>
+                            <ul class="key-points"><li>Definisi reaktan & produk</li><li>Penyetaraan persamaan reaksi</li><li>Jenis-jenis reaksi umum</li></ul>
+                            <div class="quiz-box" data-correct-answer="produk">
+                                <p><strong>Cek Pemahaman:</strong> Zat hasil dari reaksi kimia disebut...?</p>
+                                <button onclick="checkQuiz(this, 'produk', true)">Produk</button>
+                                <button onclick="checkQuiz(this, 'reaktan', true)">Reaktan</button>
+                                <div class="feedback" role="alert" aria-live="assertive"></div>
+                            </div>
+                        </div>
+						<div class="media-content">
+                            <div class="video-placeholder">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/YRZb_hmonsU" title="Video tentang Reaksi Kimia" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="materi-card interactive-card" data-aos="fade-up" data-aos-delay="600">
+                    <h3><i class="fas fa-vial"></i> 4. Asam dan Basa: Kekuatan pH</h3>
+                    <div class="card-content">
+                        <div class="text-content">
+                             <p>pH adalah singkatan dari potensi hidrogen yang merupakan ukuran tingkat keasaman atau kebasaan suatu lingkungan dalam skala 0 hingga 14, dengan 7 bersifat netral. Nilai pH kurang dari 7 menunjukkan sifat asam, sedangkan nilai lebih dari 7 menunjukkan sifat basa atau alkali. Agar lebih paham cek video ini yaa!  👉 </p>
+                            <ul class="key-points"><li>Definisi Asam & Basa</li><li>Skala pH dan aplikasinya</li><li>Netralisasi (titrasi)</li></ul>
+                            <div class="quiz-box" data-correct-answer="basa">
+                                <p><strong>Cek Pemahaman:</strong> Larutan yang memiliki pH 12 termasuk kategori...?</p>
+                                <button onclick="checkQuiz(this, 'basa', true)">Basa</button>
+                                <button onclick="checkQuiz(this, 'asam', true)">Asam</button>
+                                <div class="feedback" role="alert" aria-live="assertive"></div>
+                            </div>
+                        </div>
+                        <div class="media-content">
+                           
+                            <div class="video-placeholder">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/ABJjRldplC4" title="Video tentang Asam dan Basa" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="materi-card interactive-card" data-aos="fade-up" data-aos-delay="800">
+                    <h3><i class="fas fa-seedling"></i> 5. Kimia Organik Dasar: Makhluk Hidup dan Karbon</h3>
+                    <div class="card-content">
+                        <div class="text-content">
+                           <p>Kimia organik adalah cabang ilmu kimia yang mempelajari struktur, sifat, komposisi, reaksi, dan sintesis senyawa yang mengandung karbon, terutama yang terkait dengan hidrogen. Bidang ini mempelajari senyawa yang membentuk kehidupan, seperti protein dan karbohidrat, serta senyawa buatan seperti plastik dan obat-obatan, dan sangat penting untuk berbagai industri. Karbon dapat membentuk rantai panjang yang menjadi dasar semua kehidupan (alkana, alkena, dan alkohol). Atau bisa dilihat di video sebelah ini 👉</p>
+                            <ul class="key-points"><li>Keunikan atom karbon</li><li>Senyawa hidrokarbon dasar</li><li>Gugus fungsi sederhana</li></ul>
+                            <div class="quiz-box" data-correct-answer="karbon">
+                                <p><strong>Cek Pemahaman:</strong> Elemen utama yang dipelajari dalam Kimia Organik adalah...?</p>
+                                <button onclick="checkQuiz(this, 'karbon', true)">Karbon</button>
+                                <button onclick="checkQuiz(this, 'oksigen', true)">Oksigen</button>
+                                <div class="feedback" role="alert" aria-live="assertive"></div>
+                            </div>
+                        </div>
+                        <div class="media-content">
+                           
+                            <div class="video-placeholder">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/JNDzdzSmJuA" title="Video tentang Kimia Organik" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+               
+
+          
+
+        <section id="bank-soal" class="quiz-section">
+            <div class="container">
+                <h2 class="text-center">🧪 Bank Soal Kimia Dasar</h2>
+                <p class="text-center" style="margin-bottom: 40px;">Uji pemahaman Anda pada materi Atom, Ikatan, dan Reaksi Kimia!</p>
+
+                <div class="quiz-item" data-aos="fade-up" data-correct-answer="A">
+                    <p class="question-text">1. Unsur dengan nomor atom 11 memiliki konfigurasi elektron 2.8.1. Jika unsur ini berikatan dengan unsur yang memiliki 7 elektron valensi, jenis ikatan yang terbentuk adalah...</p>
+                    <div class="options-group">
+                        <button onclick="checkQuiz(this, 'A')">A. Ikatan ionik</button>
+                        <button onclick="checkQuiz(this, 'B')">B. Ikatan kovalen polar</button>
+                        <button onclick="checkQuiz(this, 'C')">C. Ikatan kovalen nonpolar</button>
+                        <button onclick="checkQuiz(this, 'D')">D. Ikatan logam</button>
+                    </div>
+                    <div class="feedback-box" role="alert" aria-live="assertive"></div>
+                </div>
+
+                <div class="quiz-item" data-aos="fade-up" data-aos-delay="100" data-correct-answer="C">
+                    <p class="question-text">2. Senyawa hidrokarbon yang hanya memiliki ikatan tunggal antar atom karbonnya diklasifikasikan sebagai...</p>
+                    <div class="options-group">
+                        <button onclick="checkQuiz(this, 'A')">A. Alkena</button>
+                        <button onclick="checkQuiz(this, 'B')">B. Alkuna</button>
+                        <button onclick="checkQuiz(this, 'C')">C. Alkana</button>
+                        <button onclick="checkQuiz(this, 'D')">D. Aromatik</button>
+                    </div>
+                    <div class="feedback-box" role="alert" aria-live="assertive"></div>
+                </div>
+
+                <div class="quiz-item" data-aos="fade-up" data-aos-delay="200" data-correct-answer="D">
+                    <p class="question-text">3. Reaksi kimia di mana dua atau lebih reaktan bergabung membentuk satu produk tunggal disebut reaksi...</p>
+                    <div class="options-group">
+                        <button onclick="checkQuiz(this, 'A')">A. Penggantian tunggal</button>
+                        <button onclick="checkQuiz(this, 'B')">B. Dekomposisi</button>
+                        <button onclick="checkQuiz(this, 'C')">C. Pembakaran</button>
+                        <button onclick="checkQuiz(this, 'D')">D. Sintesis (penggabungan)</button>
+                    </div>
+                    <div class="feedback-box" role="alert" aria-live="assertive"></div>
+                </div>
+
+                <div class="quiz-item" data-aos="fade-up" data-aos-delay="300" data-correct-answer="A">
+                    <p class="question-text">4. Cairan apa yang paling kuat bersifat asam berdasarkan nilai pH di bawah ini?</p>
+                    <div class="options-group">
+                        <button onclick="checkQuiz(this, 'A')">A. pH 1.5 (Jus lemon)</button>
+                        <button onclick="checkQuiz(this, 'B')">B. pH 5.0 (Air hujan)</button>
+                        <button onclick="checkQuiz(this, 'C')">C. pH 7.0 (Air murni)</button>
+                        <button onclick="checkQuiz(this, 'D')">D. pH 8.5 (Air laut)</button>
+                    </div>
+                    <div class="feedback-box" role="alert" aria-live="assertive"></div>
+                </div>
+
+                <div class="quiz-item" data-aos="fade-up" data-aos-delay="400" data-correct-answer="B">
+                    <p class="question-text">5. Konsep mol dalam kimia digunakan untuk menghitung...</p>
+                    <div class="options-group">
+                        <button onclick="checkQuiz(this, 'A')">A. Titik didih suatu zat</button>
+                        <button onclick="checkQuiz(this, 'B')">B. Jumlah partikel atau massa zat</button>
+                        <button onclick="checkQuiz(this, 'C')">C. Kecepatan reaksi</button>
+                        <button onclick="checkQuiz(this, 'D')">D. Perubahan energi dalam reaksi</button>
+                    </div>
+                    <div class="feedback-box" role="alert" aria-live="assertive"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="komentar" class="materi-section">
+            <div class="container">
+                <h2>Komentar & Diskusi</h2>
+                <form id="commentForm" style="margin-bottom:20px;">
+                    <input type="text" id="commentName" placeholder="Nama Anda" required style="padding:7px; width:30%; margin-right:10px;" />
+                    <input type="text" id="commentText" placeholder="Tulis komentar..." required style="padding:7px; width:40%; margin-right:10px;" />
+                    <button type="submit" class="btn btn-primary">Kirim</button>
+                </form>
+                <div id="commentList"></div>
+            </div>
+        </section>
+        <section id="tentang" class="about-section">
+            <div class="container">
+                <h2>Tentang Kimiapedia 💡</h2>
+                <p>Kimiapedia dibuat untuk membuat kimia mudah dipahami oleh semua kalangan usia. Saya menggunakan pendekatan visual, interaktif, dan mudah diakses, sejalan dengan semangat literasi digital. Misi saya adalah memberdayakan pelajar untuk mengeksplorasi misteri dan keindahan reaksi yang membentuk alam semesta kita. Selain itu Kimiapedia ini saya buat sebagai salah satu tugas akhir yang diberikan oleh dosen saya</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p><i class="fas fa-copyright"></i> 2025 Kimiapedia. Belajar Kimia? EZ PZ Lemon Squeezy. Dirancang dengan semangat ilmiah.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Inisialisasi AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+        });
+
+        // Observer untuk navigasi aktif (highlight)
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -50% 0px', /* Lebih sensitif ke bagian atas */
+            threshold: 0.1,
+        };
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            let currentActive = '';
+            entries.forEach((entry) => {
+                // Tentukan bagian yang paling terlihat atau yang baru saja masuk/keluar
+                if (entry.isIntersecting) {
+                    currentActive = entry.target.id;
+                }
+            });
+
+            if (currentActive) {
+                navLinks.forEach((link) => link.classList.remove('active'));
+                const navLink = document.querySelector(
+                    `#link-${currentActive.replace(/-/g, '')}`
+                );
+                if (navLink) {
+                    navLink.classList.add('active');
+                }
+            }
+        }, observerOptions);
+
+        sections.forEach((section) => {
+            // Hindari pengamat pada popup
+            if (section.id !== 'author-info') {
+                sectionObserver.observe(section);
+            }
+        });
+
+        // Fungsi Tombol Penulis (Popup)
+        function toggleAuthorInfo() {
+            const authorPopup = document.getElementById('author-info');
+            authorPopup.classList.toggle('active');
+            document.body.classList.toggle('no-scroll');
+        }
+
+        // Fungsi Kuis Gabungan (Untuk Kuis Singkat di Materi & Bank Soal)
+        function checkQuiz(button, expectedAnswer, isSimpleQuiz = false) {
+            const quizContainer = isSimpleQuiz ? button.closest('.quiz-box') : button.closest('.quiz-item');
+            const feedback = isSimpleQuiz ? quizContainer.querySelector('.feedback') : quizContainer.querySelector('.feedback-box');
+            const allButtons = quizContainer.querySelectorAll('button');
+
+            // Ambil jawaban yang diharapkan dari data-attribute, jika tidak, gunakan expectedAnswer
+            const correctAnswer = isSimpleQuiz
+                ? quizContainer.getAttribute('data-correct-answer')
+                : expectedAnswer; // Untuk Bank Soal, jawaban benar ada di parameter
+
+            // Nonaktifkan semua tombol setelah diklik
+            allButtons.forEach((btn) => (btn.disabled = true));
+
+            const isCorrect = isSimpleQuiz
+                ? button.textContent.toLowerCase().trim() === correctAnswer
+                : button.textContent.substring(0, 1) === correctAnswer; // Untuk Bank Soal, cek hanya huruf (A, B, C, D)
+
+            if (isCorrect) {
+                feedback.innerHTML = `<span style="color: var(--accent-green);"><i class="fas fa-check-circle"></i> <strong>Benar!</strong> Pemahaman Anda bagus.</span>`;
+                button.classList.add('correct-answer');
+                if (!isSimpleQuiz) quizContainer.style.borderLeftColor = 'var(--accent-green)';
+            } else {
+                feedback.innerHTML = `<span style="color: var(--accent-red);"><i class="fas fa-times-circle"></i> <strong>Salah.</strong> Coba tinjau kembali materinya!</span>`;
+                button.classList.add('wrong-answer');
+                if (!isSimpleQuiz) quizContainer.style.borderLeftColor = 'var(--accent-red)';
+
+                // Highlight jawaban yang benar
+                allButtons.forEach((btn) => {
+                    if (isSimpleQuiz && btn.textContent.toLowerCase().trim() === correctAnswer) {
+                        btn.classList.add('correct-answer');
+                    }
+                    if (!isSimpleQuiz && btn.textContent.substring(0, 1) === correctAnswer) {
+                        btn.classList.add('correct-answer');
+                    }
+                });
+            }
+        }
+
+        // Komentar menggunakan LocalStorage
+        function showComments() {
+            let comments = JSON.parse(localStorage.getItem('kimiapediaComments') || '[]');
+            let list = document.getElementById('commentList');
+            list.innerHTML = '';
+            comments.slice().reverse().forEach(function (c) {
+                // tampilkan terbaru di atas
+                list.innerHTML += `<div style="margin-bottom:10px;padding:15px 15px 10px 15px;border-left:4px solid var(--primary-blue);background:#fff;border-radius:7px;box-shadow:0 1px 5px #eee;"><b style="color:var(--secondary-blue)">${c.name}</b><br><span>${c.text}</span></div>`;
+            });
+        }
+
+        document.getElementById('commentForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let name = document.getElementById('commentName').value.trim() || 'Anonim';
+            let text = document.getElementById('commentText').value.trim();
+            if (text.length === 0) return;
+            let comments = JSON.parse(localStorage.getItem('kimiapediaComments') || '[]');
+            comments.push({ name: name, text: text });
+            localStorage.setItem('kimiapediaComments', JSON.stringify(comments));
+            document.getElementById('commentText').value = '';
+            showComments();
+        });
+        showComments();
+    </script>
+</body>
+</html>
